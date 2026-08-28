@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.db
+*.sqlite3
+backend/app/uploads/*
+!backend/app/uploads/.gitkeep
+
+# Node
+node_modules/
+dist/
+.vite/
+*.log
+
+# Environment & IDE
+.env
+.vscode/
+.idea/
+.DS_Store
