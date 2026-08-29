@@ -1,20 +1,50 @@
-# Python
+# Python Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+backend/venv/
+backend/.venv/
+
+# Python caching & bytecode
 __pycache__/
-*.py[cod]
-*$py.class
-*.db
-*.sqlite3
-backend/app/uploads/*
-!backend/app/uploads/.gitkeep
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
 
-# Node
+# Node environment and packaging
 node_modules/
+frontend/node_modules/
 dist/
-.vite/
-*.log
+build/
+.npm
+package-lock.json
 
-# Environment & IDE
-.env
+# Local database files
+*.db
+*.db-journal
+*.sqlite3
+backend/medikiosk.db
+
+# IDE & Editor files
 .vscode/
 .idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Environment configuration
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS files
 .DS_Store
+Thumbs.db

@@ -45,9 +45,11 @@ export const AIInterviewStep: React.FC<AIInterviewStepProps> = ({
         setDetectedFlags((prev) => [...prev, ...res.detected_red_flags]);
       }
 
-      // Auto speak question text
+      // Auto speak question text with a short timeout to let DOM render and stabilize
       if (res.question_text) {
-        speakText(res.question_text, language);
+        setTimeout(() => {
+          speakText(res.question_text, language);
+        }, 250);
       }
 
       if (res.is_complete || stepCount > maxSteps) {
@@ -68,7 +70,7 @@ export const AIInterviewStep: React.FC<AIInterviewStepProps> = ({
     const finalVal = answerVal || selectedAnswer || 'Not specified';
     const questionKey = currentQuestion?.next_question_code || `Q_${stepCount}`;
     const newAnswers = { ...answers, [questionKey]: finalVal };
-    
+
     setAnswers(newAnswers);
     setSelectedAnswer('');
     setStepCount((prev) => prev + 1);
@@ -107,7 +109,7 @@ export const AIInterviewStep: React.FC<AIInterviewStepProps> = ({
           </div>
         ) : (
           <div>
-            
+
             {/* Question Header */}
             <div className="p-6 bg-slate-900/90 rounded-2xl border border-cyan-500/40 mb-6">
               <div className="flex items-start justify-between gap-4 mb-3">
@@ -119,7 +121,7 @@ export const AIInterviewStep: React.FC<AIInterviewStepProps> = ({
                     Category: {currentQuestion?.category || 'HPI'}
                   </span>
                 </div>
-                
+
                 <button
                   onClick={() => speakText(currentQuestion?.question_text, language)}
                   className="p-2 rounded-lg bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 transition-colors"
@@ -154,11 +156,10 @@ export const AIInterviewStep: React.FC<AIInterviewStepProps> = ({
                     <button
                       key={idx}
                       onClick={() => handleNextAnswer(opt)}
-                      className={`p-4 rounded-xl border text-left font-bold text-base kiosk-btn transition-all ${
-                        selectedAnswer === opt
+                      className={`p-4 rounded-xl border text-left font-bold text-base kiosk-btn transition-all ${selectedAnswer === opt
                           ? 'bg-cyan-600 border-cyan-400 text-white shadow-lg'
                           : 'bg-slate-900 border-slate-700 text-slate-200 hover:border-cyan-500'
-                      }`}
+                        }`}
                     >
                       {opt}
                     </button>

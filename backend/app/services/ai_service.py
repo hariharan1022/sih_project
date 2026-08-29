@@ -72,13 +72,17 @@ And previous clinical intake answers: {json.dumps(previous_answers)}
 Target Language: {language} (en=English, ta=Tamil, hi=Hindi)
 
 Formulate the NEXT single most relevant clinical clarification question based on SOCRATES (Onset, Location, Character, Radiation, Associated symptoms, Timing, Exacerbating/Relieving factors, Severity) or missing medical history.
+You MUST write the "question_text" and ALL "suggested_options" ONLY in the Target Language specified:
+- If Target Language is ta, translate everything to Tamil (தமிழ்).
+- If Target Language is hi, translate everything to Hindi (हिंदी).
+- If Target Language is en, translate everything to English.
 
 Return JSON schema:
 {{
   "next_question_code": "Q_NEXT",
   "category": "HPI",
-  "question_text": "Question text in specified language",
-  "suggested_options": ["Option 1", "Option 2", "Option 3", "Option 4"],
+  "question_text": "Question text explicitly translated to the requested target language",
+  "suggested_options": ["Option 1 in target language", "Option 2 in target language"],
   "is_complete": false,
   "detected_red_flags": []
 }}
@@ -103,81 +107,176 @@ Return JSON schema:
     ) -> Dict[str, Any]:
         cc_lower = chief_complaint.lower()
         answered_count = len(previous_answers)
+        
+        # Ensure language is one of supported values; default to English
+        lang = language if language in ["en", "ta", "hi"] else "en"
+
+        # Translatable content database
+        multilingual_questions = {
+            "en": {
+                "Q_PAIN_ONSET": {
+                    "question_text": "When did the chest pain start and how severe is it?",
+                    "suggested_options": ["Sudden onset (Severe 8-10/10)", "Gradual onset (Mild to Moderate)", "On and off for 2+ days"]
+                },
+                "Q_PAIN_RADIATION": {
+                    "question_text": "Does the chest pain spread to your left arm, jaw, or back?",
+                    "suggested_options": ["Yes, spreads to left arm/jaw", "Yes, spreads to back", "No, stays in chest"]
+                },
+                "Q_ASSOCIATED_SYMPTOMS": {
+                    "question_text": "Are you experiencing sweating, nausea, or shortness of breath?",
+                    "suggested_options": ["Profuse sweating & breathing difficulty", "Nausea only", "None of these"]
+                },
+                "Q_DURATION": {
+                    "question_text": "How long have you had these symptoms?",
+                    "suggested_options": ["Less than 24 hours", "1-3 days", "1 week", "More than 1 month"]
+                },
+                "Q_PAST_CONDITIONS": {
+                    "question_text": "Do you have any existing medical conditions (e.g. Diabetes, Hypertension)?",
+                    "suggested_options": ["Hypertension (High BP)", "Diabetes", "Asthma / Respiratory", "None"]
+                },
+                "Q_MEDICATIONS": {
+                    "question_text": "Are you currently taking any prescription medications?",
+                    "suggested_options": ["Yes, daily medications", "Taking painkillers", "No regular medications"]
+                },
+                "Q_ALLERGIES": {
+                    "question_text": "Do you have any known drug or severe allergies?",
+                    "suggested_options": ["Penicillin / Antibiotics", "Aspirin / NSAIDs", "Food allergies", "No known allergies"]
+                },
+                "Q_COMPLETE": {
+                    "question_text": "Thank you. Clinical intake questioning is complete. Please proceed to upload past medical documents or review your history.",
+                    "suggested_options": []
+                }
+            },
+            "ta": {
+                "Q_PAIN_ONSET": {
+                    "question_text": "மார்பு வலி எப்போது தொடங்கியது மற்றும் எவ்வளவு தீவிரமாக உள்ளது?",
+                    "suggested_options": ["திடீரென தொடங்கியது (கடுமையான வலி)", "படிப்படியாக தொடங்கியது (மிதமான வலி)", "2 நாட்களுக்கு மேல் உள்ளது"]
+                },
+                "Q_PAIN_RADIATION": {
+                    "question_text": "மார்பு வலி உங்களின் இடது கை, தாடை அல்லது முதுகு பகுதிக்கு பரவுகிறதா?",
+                    "suggested_options": ["ஆம், இடது கை/தாடைக்கு பரவுகிறது", "ஆம், முதுகுக்கு பரவுகிறது", "இல்லை, மார்பில் மட்டுமே உள்ளது"]
+                },
+                "Q_ASSOCIATED_SYMPTOMS": {
+                    "question_text": "உங்களுக்கு அதிக வியர்வை, குமட்டல் அல்லது மூச்சு திணறல் ஏதேனும் உள்ளதா?",
+                    "suggested_options": ["அதிக வியர்வை மற்றும் மூச்சு திணறல் உள்ளது", "குமட்டல் மட்டும் உள்ளது", "இவற்றுள் ஏதுமில்லை"]
+                },
+                "Q_DURATION": {
+                    "question_text": "இந்த அறிகுறிகள் உங்களுக்கு எவ்வளவு நாட்களாக உள்ளன?",
+                    "suggested_options": ["24 மணி நேரத்திற்கும் குறைவாக", "1-3 நாட்கள்", "1 வாரம்", "1 மாதத்திற்கு மேல்"]
+                },
+                "Q_PAST_CONDITIONS": {
+                    "question_text": "உங்களுக்கு ஏதேனும் முந்தைய மருத்துவ கோளாறுகள் (எ.கா. நீரிழிவு, இரத்த அழுத்தம்) உள்ளனவா?",
+                    "suggested_options": ["இரத்த அழுத்தம் (High BP)", "நீரிழிவு நோய் (Diabetes)", "ஆஸ்துமா / சுவாசப் பிரச்சனை", "எதுவும் இல்லை"]
+                },
+                "Q_MEDICATIONS": {
+                    "question_text": "நீங்கள் தற்போது ஏதேனும் வழக்கமான மருந்துகளை உட்கொள்கிறீர்களா?",
+                    "suggested_options": ["ஆம், தினமும் எடுத்துக்கொள்கிறேன்", "வலி நிவாரணிகள் மட்டும்", "வழக்கமான மருந்துகள் எதுவும் இல்லை"]
+                },
+                "Q_ALLERGIES": {
+                    "question_text": "உங்களுக்கு ஏதேனும் மருந்து அல்லது பொதுவான ஒவ்வாமை (Allergy) உள்ளதா?",
+                    "suggested_options": ["பென்சிலின் / நுண்ணுயிர் எதிர்ப்பிகள்", "ஆஸ்பிரின் / வலி மருந்துகள்", "உணவு ஒவ்வாமை", "ஒவ்வாமை எதுவும் இல்லை"]
+                },
+                "Q_COMPLETE": {
+                    "question_text": "நன்றி. உங்களின் மருத்துவ விபரங்கள் பதிவு செய்யப்பட்டன. உங்கள் முந்தைய மருத்துவ ஆவணங்களை பதிவேற்றலாம் அல்லது விபரங்களை சரிபார்க்கலாம்.",
+                    "suggested_options": []
+                }
+            },
+            "hi": {
+                "Q_PAIN_ONSET": {
+                    "question_text": "छाती में दर्द कब शुरू हुआ और यह कितना गंभीर है?",
+                    "suggested_options": ["अचानक शुरू हुआ (तीव्र दर्द)", "धीरे-धीरे शुरू हुआ", "2 दिन से अधिक"]
+                },
+                "Q_PAIN_RADIATION": {
+                    "question_text": "क्या आपकी छाती का दर्द आपके बाएं हाथ, जबड़े या पीठ में फैलता है?",
+                    "suggested_options": ["हाँ, बाएं हाथ/जबड़े में फैलता है", "हाँ, पीठ में फैलता है", "नहीं, केवल छाती में रहता है"]
+                },
+                "Q_ASSOCIATED_SYMPTOMS": {
+                    "question_text": "क्या आपको पसीना, मतली या सांस लेने में तकलीफ हो रही है?",
+                    "suggested_options": ["पसीना और सांस की तकलीफ", "केवल मतली", "इनमें से कोई नहीं"]
+                },
+                "Q_DURATION": {
+                    "question_text": "आपको ये लक्षण कब से महसूस हो रहे हैं?",
+                    "suggested_options": ["24 घंटे से कम", "1-3 दिन", "1 सप्ताह", "1 महीने से अधिक"]
+                },
+                "Q_PAST_CONDITIONS": {
+                    "question_text": "क्या आपको पहले से कोई बीमारी है (जैसे मधुमेह, उच्च रक्तचाप)?",
+                    "suggested_options": ["उच्च रक्तचाप (High BP)", "मधुमेह (Diabetes)", "अस्थमा / सांस की बीमारी", "कोई नहीं"]
+                },
+                "Q_MEDICATIONS": {
+                    "question_text": "क्या आप वर्तमान में कोई नियमित दवा ले रहे हैं?",
+                    "suggested_options": ["हाँ, नियमित रूप से दवाएं", "केवल दर्द निवारक दवाएं", "कोई नियमित दवा नहीं"]
+                },
+                "Q_ALLERGIES": {
+                    "question_text": "क्या आपको किसी दवा या चीज से एलर्जी है?",
+                    "suggested_options": ["पेनिसिलिन / एंटीबायोटिक्स", "अस्पिरिन / एनएसएआईडी", "खाद्य एलर्जी", "कोई एलर्जी नहीं"]
+                },
+                "Q_COMPLETE": {
+                    "question_text": "धन्यवाद। आंतरिक पूछताछ पूरी हो चुकी है। कृपया अपने पिछले चिकित्सा दस्तावेज अपलोड करें अथवा जानकारी की समीक्षा करें।",
+                    "suggested_options": []
+                }
+            }
+        }
 
         # Dynamic SOCRATES sequence for Chest Pain / Dyspnea
-        if any(term in cc_lower for term in ["chest pain", "மார்பு வலி", "சீனா வலி", "pain in chest", "shortness of breath"]):
+        is_chest_pain = any(term in cc_lower for term in ["chest pain", "மார்பு வலி", "சீனா வலி", "pain in chest", "shortness of breath", "दर्द", "सांस"])
+        
+        if is_chest_pain:
             if answered_count == 0:
-                if language == "ta":
-                    return {
-                        "next_question_code": "Q_PAIN_ONSET",
-                        "category": "HPI",
-                        "question_text": "மார்பு வலி எப்போது தொடங்கியது மற்றும் எவ்வளவு தீவிரமாக உள்ளது?",
-                        "suggested_options": ["திடீரென தொடங்கியது (கடுமையான வலி)", "படிப்படியாக தொடங்கியது (மிதமான வலி)", "2 நாட்களுக்கு மேல் உள்ளது"],
-                        "is_complete": False,
-                        "detected_red_flags": ["Potential Acute Coronary Indicator - Requires Triage"]
-                    }
-                elif language == "hi":
-                    return {
-                        "next_question_code": "Q_PAIN_ONSET",
-                        "category": "HPI",
-                        "question_text": "छाती में दर्द कब शुरू हुआ और यह कितना गंभीर है?",
-                        "suggested_options": ["अचानक शुरू हुआ (तीव्र दर्द)", "धीरे-धीरे शुरू हुआ", "2 दिन से अधिक"],
-                        "is_complete": False,
-                        "detected_red_flags": ["Potential Acute Coronary Indicator - Requires Triage"]
-                    }
-                else:
-                    return {
-                        "next_question_code": "Q_PAIN_ONSET",
-                        "category": "HPI",
-                        "question_text": "When did the chest pain start and how severe is it?",
-                        "suggested_options": ["Sudden onset (Severe 8-10/10)", "Gradual onset (Mild to Moderate)", "On and off for 2+ days"],
-                        "is_complete": False,
-                        "detected_red_flags": ["Potential Acute Coronary Indicator - Requires Triage"]
-                    }
+                q_data = multilingual_questions[lang]["Q_PAIN_ONSET"]
+                return {
+                    "next_question_code": "Q_PAIN_ONSET",
+                    "category": "HPI",
+                    "question_text": q_data["question_text"],
+                    "suggested_options": q_data["suggested_options"],
+                    "is_complete": False,
+                    "detected_red_flags": ["Potential Acute Coronary Indicator - Requires Triage"]
+                }
             elif answered_count == 1:
+                q_data = multilingual_questions[lang]["Q_PAIN_RADIATION"]
                 return {
                     "next_question_code": "Q_PAIN_RADIATION",
                     "category": "HPI",
-                    "question_text": "Does the chest pain spread to your left arm, jaw, or back?",
-                    "suggested_options": ["Yes, spreads to left arm/jaw", "Yes, spreads to back", "No, stays in chest"],
+                    "question_text": q_data["question_text"],
+                    "suggested_options": q_data["suggested_options"],
                     "is_complete": False,
                     "detected_red_flags": []
                 }
             elif answered_count == 2:
+                q_data = multilingual_questions[lang]["Q_ASSOCIATED_SYMPTOMS"]
                 return {
                     "next_question_code": "Q_ASSOCIATED_SYMPTOMS",
                     "category": "HPI",
-                    "question_text": "Are you experiencing sweating, nausea, or shortness of breath?",
-                    "suggested_options": ["Profuse sweating & breathing difficulty", "Nausea only", "None of these"],
+                    "question_text": q_data["question_text"],
+                    "suggested_options": q_data["suggested_options"],
                     "is_complete": False,
                     "detected_red_flags": []
                 }
 
         # General questionnaire fallback
         if answered_count >= 4:
+            q_data = multilingual_questions[lang]["Q_COMPLETE"]
             return {
                 "next_question_code": "Q_COMPLETE",
                 "category": "REVIEW",
-                "question_text": "Thank you. Clinical intake questioning is complete. Please proceed to upload past medical documents or review your history.",
-                "suggested_options": [],
+                "question_text": q_data["question_text"],
+                "suggested_options": q_data["suggested_options"],
                 "is_complete": True,
                 "detected_red_flags": []
             }
             
-        questions_seq = [
-            ("Q_DURATION", "HPI", "How long have you had these symptoms?", ["Less than 24 hours", "1-3 days", "1 week", "More than 1 month"]),
-            ("Q_PAST_CONDITIONS", "PMH", "Do you have any existing medical conditions (e.g. Diabetes, Hypertension)?", ["Hypertension (High BP)", "Diabetes", "Asthma / Respiratory", "None"]),
-            ("Q_MEDICATIONS", "DRUG", "Are you currently taking any prescription medications?", ["Yes, daily medications", "Taking painkillers", "No regular medications"]),
-            ("Q_ALLERGIES", "ALLERGY", "Do you have any known drug or severe allergies?", ["Penicillin / Antibiotics", "Aspirin / NSAIDs", "Food allergies", "No known allergies"])
-        ]
+        questions_codes = ["Q_DURATION", "Q_PAST_CONDITIONS", "Q_MEDICATIONS", "Q_ALLERGIES"]
+        categories = ["HPI", "PMH", "DRUG", "ALLERGY"]
         
-        idx = min(answered_count, len(questions_seq) - 1)
-        code, cat, text, opts = questions_seq[idx]
+        idx = min(answered_count, len(questions_codes) - 1)
+        code = questions_codes[idx]
+        category = categories[idx]
+        q_data = multilingual_questions[lang][code]
+        
         return {
             "next_question_code": code,
-            "category": cat,
-            "question_text": text,
-            "suggested_options": opts,
+            "category": category,
+            "question_text": q_data["question_text"],
+            "suggested_options": q_data["suggested_options"],
             "is_complete": False,
             "detected_red_flags": []
         }
