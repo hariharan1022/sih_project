@@ -27,6 +27,37 @@ export const AIInterviewStep: React.FC<AIInterviewStepProps> = ({
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [detectedFlags, setDetectedFlags] = useState<any[]>([]);
 
+  const FALLBACK_QUESTIONS: Record<number, any> = {
+    1: {
+      question_text: "When did your symptoms start? (Onset)",
+      category: "Onset",
+      suggested_options: ["Less than 24 hours ago", "1-3 days ago", "1 week ago", "More than a week ago"],
+      next_question_code: "Q_ONSET",
+      is_complete: false
+    },
+    2: {
+      question_text: "Where is the pain/discomfort located? (Location)",
+      category: "Location",
+      suggested_options: ["Chest / Left Arm", "Upper Abdomen", "Lower Back", "General head / body fatigue"],
+      next_question_code: "Q_LOCATION",
+      is_complete: false
+    },
+    3: {
+      question_text: "How severe are your symptoms on a scale of 1-10? (Severity)",
+      category: "Severity",
+      suggested_options: ["1-3 (Mild)", "4-6 (Moderate)", "7-8 (Severe)", "9-10 (Extremely Severe)"],
+      next_question_code: "Q_SEVERITY",
+      is_complete: false
+    },
+    4: {
+      question_text: "Do you have any past history of Chronic Conditions? (Past History)",
+      category: "Past History",
+      suggested_options: ["Hypertension (High BP)", "Diabetes mellitus", "Cardiac disease", "None of the above"],
+      next_question_code: "Q_PAST_CONDITIONS",
+      is_complete: true
+    }
+  };
+
   const maxSteps = 4;
 
   const fetchNextQuestion = async (updatedAnswers: Record<string, any>) => {
@@ -56,7 +87,51 @@ export const AIInterviewStep: React.FC<AIInterviewStepProps> = ({
         onCompleteInterview(updatedAnswers, detectedFlags);
       }
     } catch (err) {
-      console.warn('Error fetching AI question:', err);
+      console.warn('Error fetching AI question, utilizing local fallback:', err);
+      const stepIdx = Math.min(stepCount, maxSteps);
+      const fallback = { ...FALLBACK_QUESTIONS[stepIdx] };
+
+      // Localize fallback text
+      if (language === 'ta') {
+        if (stepIdx === 1) {
+          fallback.question_text = "உங்களுக்கு மார்பில் வலி எப்போது தொடங்கியது?";
+          fallback.suggested_options = ["24 மணிநேரத்திற்குள்", "1-3 நாட்களுக்கு முன்", "1 வாரத்திற்கு முன்பு", "1 வாரத்திற்கும் மேலாக"];
+        } else if (stepIdx === 2) {
+          fallback.question_text = "வலி/அசௌகரியம் எங்குள்ளது?";
+          fallback.suggested_options = ["மார்பு / இடது கை", "மேல் வயிறு", "முதுகு பகுதி", "பொதுவான உடல் சோர்வு"];
+        } else if (stepIdx === 3) {
+          fallback.question_text = "உங்கள் அறிகுறிகள் எவ்வளவு தீவிரமாக உள்ளன (1-10)?";
+          fallback.suggested_options = ["1-3 (லேசான)", "4-6 (மிதமான)", "7-8 (கடுமையான)", "9-10 (மிகக் கடுமையான)"];
+        } else {
+          fallback.question_text = "முன்பு உங்களுக்கு ஏதேனும் நோய்கள் இருந்ததா?";
+          fallback.suggested_options = ["இரத்த அழுத்தம் (High BP)", "நீரிழிவு நோய் (Diabetes)", "இதய நோய் (Cardiac)", "எதுவும் இல்லை"];
+        }
+      } else if (language === 'hi') {
+        if (stepIdx === 1) {
+          fallback.question_text = "आपके लक्षण कब शुरू हुए थे?";
+          fallback.suggested_options = ["24 घंटे से कम पहले", "1-3 दिन पहले", "1 सप्ताह पहले", "1 सप्ताह से अधिक पहले"];
+        } else if (stepIdx === 2) {
+          fallback.question_text = "दर्द / असुविधा कहाँ स्थित है?";
+          fallback.suggested_options = ["छाती / बाईं बांह", "ऊपरी पेट", "पीठ का निचला हिस्सा", "सामान्य शरीर की थकान"];
+        } else if (stepIdx === 3) {
+          fallback.question_text = "1-10 के पैमाने पर आपके लक्षण कितने गंभीर हैं?";
+          fallback.suggested_options = ["1-3 (हल्का)", "4-6 (मध्यम)", "7-8 (गंभीर)", "9-10 (अत्यंत गंभीर)"];
+        } else {
+          fallback.question_text = "क्या आपको पहले कभी कोई बीमारी रही है?";
+          fallback.suggested_options = ["उच्च रक्तचाप (High BP)", "मधुमेह (Diabetes)", "हृदय रोग (Cardiac)", "कोई नहीं"];
+        }
+      }
+
+      setCurrentQuestion(fallback);
+      setTimeout(() => {
+        speakText(fallback.question_text, language);
+      }, 250);
+
+      if (fallback.is_complete || stepCount > maxSteps) {
+        setTimeout(() => {
+          onCompleteInterview(updatedAnswers, detectedFlags);
+        }, 1500);
+      }
     } finally {
       setLoading(false);
     }

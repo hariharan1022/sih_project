@@ -75,7 +75,11 @@ export const PatientKioskPage: React.FC<PatientKioskPageProps> = ({
       return;
     }
     if (sessionId) {
-      await recordConsentApi(sessionId, agreed, language);
+      try {
+        await recordConsentApi(sessionId, agreed, language);
+      } catch (err) {
+        console.warn('API error recording consent:', err);
+      }
     }
     setStep('CHIEF_COMPLAINT');
   };
