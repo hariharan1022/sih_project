@@ -2,7 +2,7 @@
 
 @layer base {
   body {
-    @apply bg-slate-900 text-slate-100 font-sans antialiased min-h-screen selection:bg-cyan-500 selection:text-white;
+    @apply bg-slate-50 text-slate-800 font-sans antialiased min-h-screen selection:bg-cyan-600 selection:text-white;
   }
 }
 
@@ -12,11 +12,11 @@
 }
 
 .kiosk-card {
-  @apply bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-2xl p-6 shadow-xl;
+  @apply bg-white border border-slate-200 rounded-3xl p-6 shadow-xl;
 }
 
 .glass-panel {
-  @apply bg-slate-900/90 border border-cyan-500/20 backdrop-blur-lg rounded-2xl shadow-2xl;
+  @apply bg-white/95 border border-slate-200 backdrop-blur-lg rounded-3xl shadow-xl;
 }
 
 /* Custom Scrollbars */
@@ -25,10 +25,10 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {

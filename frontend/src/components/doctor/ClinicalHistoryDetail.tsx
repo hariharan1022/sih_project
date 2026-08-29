@@ -182,27 +182,27 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
       {/* TAB 1: AI PHYSICIAN SUMMARY */}
       {activeTab === 'summary' && (
-        <div className="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl space-y-6">
+        <div className="p-6 bg-white rounded-3xl border border-slate-205 shadow-xl space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <FileText className="w-5 h-5 text-cyan-400" />
+            <h3 className="text-lg font-black text-slate-855 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-cyan-600" />
               <span>Structured Physician Summary Draft</span>
             </h3>
-            <span className="text-xs text-cyan-455 font-bold uppercase tracking-wider bg-cyan-900/30 px-2.5 py-0.5 rounded border border-cyan-850/50">Local LLM: Qwen3:8b</span>
+            <span className="text-xs text-cyan-705 font-bold uppercase tracking-wider bg-cyan-70 px-2.5 py-0.5 rounded border border-cyan-200 shadow-xs">Local LLM: Qwen3:8b</span>
           </div>
 
-          <div className="p-6 bg-slate-950 rounded-xl border border-slate-850 font-mono text-sm text-cyan-50/90 whitespace-pre-wrap leading-relaxed shadow-inner">
+          <div className="p-6 bg-slate-50 rounded-xl border border-slate-200 font-mono text-sm text-slate-800 whitespace-pre-wrap leading-relaxed shadow-inner">
             {history.doctor_approved_summary || history.ai_generated_summary}
           </div>
 
           {history.doctor_notes && (
-            <div className="p-5 bg-slate-850/60 rounded-xl border border-cyan-500/20">
-              <span className="text-xs uppercase text-cyan-400 font-bold block mb-1">Physician Evaluation Notes:</span>
-              <p className="text-sm text-slate-200">{history.doctor_notes}</p>
+            <div className="p-5 bg-cyan-50/35 rounded-xl border border-cyan-200/50">
+              <span className="text-xs uppercase text-cyan-705 font-bold block mb-1">Physician Evaluation Notes:</span>
+              <p className="text-sm text-slate-700 font-semibold">{history.doctor_notes}</p>
             </div>
           )}
 
-          <div className="p-3.5 bg-slate-950 rounded-lg text-xs text-slate-500 flex items-center justify-between border border-slate-850">
+          <div className="p-3.5 bg-slate-50 rounded-lg text-xs text-slate-500 flex items-center justify-between border border-slate-200 font-semibold shadow-xs">
             <span>Notice: AI clinical intake summary. Clinician holds final approval authority.</span>
             <span>Last Updated: {new Date(history.updated_at).toLocaleString()}</span>
           </div>
@@ -211,66 +211,66 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
       {/* TAB 2: DETAILED INTAKE HISTORY */}
       {activeTab === 'history' && (
-        <div className="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl space-y-6">
+        <div className="p-6 bg-white rounded-3xl border border-slate-205 shadow-xl space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <div className="p-5 bg-slate-950 rounded-xl border border-slate-850">
-              <h4 className="text-xs uppercase text-cyan-400 font-bold mb-2">Chief Complaint</h4>
-              <p className="text-lg font-bold text-white">{history.chief_complaint}</p>
+            <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
+              <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Chief Complaint</h4>
+              <p className="text-lg font-black text-slate-800">{history.chief_complaint}</p>
             </div>
 
-            <div className="p-5 bg-slate-950 rounded-xl border border-slate-850">
-              <h4 className="text-xs uppercase text-cyan-400 font-bold mb-2">History of Present Illness (HPI)</h4>
-              <p className="text-sm text-slate-300 leading-relaxed">{history.history_of_present_illness}</p>
+            <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
+              <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">History of Present Illness (HPI)</h4>
+              <p className="text-sm text-slate-700 leading-relaxed font-semibold">{history.history_of_present_illness}</p>
             </div>
 
-            <div className="p-5 bg-slate-950 rounded-xl border border-slate-850">
-              <h4 className="text-xs uppercase text-cyan-400 font-bold mb-2">Past Medical History</h4>
+            <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
+              <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Past Medical History</h4>
               {history.past_medical_history.length > 0 ? (
-                <ul className="list-disc list-inside text-sm text-slate-300 space-y-1">
+                <ul className="list-disc list-inside text-sm text-slate-700 space-y-1 font-semibold">
                   {history.past_medical_history.map((m, idx) => <li key={idx}>{m}</li>)}
                 </ul>
               ) : (
-                <span className="text-xs text-slate-500">No past conditions reported by patient</span>
+                <span className="text-xs text-slate-500 font-semibold">No past conditions reported by patient</span>
               )}
             </div>
 
-            <div className="p-5 bg-slate-950 rounded-xl border border-slate-850">
-              <h4 className="text-xs uppercase text-cyan-400 font-bold mb-2">Current Medications (OCR & Interview)</h4>
+            <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
+              <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Current Medications (OCR & Interview)</h4>
               {history.medications.length > 0 ? (
-                <div className="space-y-1.5 text-sm text-slate-305">
+                <div className="space-y-1.5 text-sm text-slate-700 font-semibold">
                   {history.medications.map((m: any, idx) => (
-                    <div key={idx} className="font-semibold text-cyan-200">
+                    <div key={idx} className="font-bold text-cyan-800">
                       • {typeof m === 'object' ? `${m.name} (${m.dosage || 'Daily'}) ${m.frequency ? `- ${m.frequency}` : ''}` : m}
                     </div>
                   ))}
                 </div>
               ) : (
-                <span className="text-xs text-slate-500">None reported</span>
+                <span className="text-xs text-slate-500 font-semibold">None reported</span>
               )}
             </div>
 
-            <div className="p-5 bg-slate-950 rounded-xl border-t border-slate-850 border-rose-500/20">
-              <h4 className="text-xs uppercase text-rose-450 font-bold mb-2">Drug & Allergy Exclusions</h4>
-              <div className="text-sm font-bold text-rose-350">
+            <div className="p-5 bg-slate-55 rounded-xl border border-rose-200/80 shadow-xs">
+              <h4 className="text-xs uppercase text-rose-700 font-bold mb-2">Drug & Allergy Exclusions</h4>
+              <div className="text-sm font-black text-rose-700 font-mono">
                 {history.allergies.join(', ') || 'No known drug allergies (NKDA)'}
               </div>
             </div>
 
             {history.ayush_data && history.ayush_data.ayush_mode_enabled && (
-              <div className="p-5 bg-slate-950 rounded-xl border border-emerald-500/20">
-                <h4 className="text-xs uppercase text-emerald-400 font-bold mb-2 flex items-center gap-1">
-                  <Leaf className="w-3.5 h-3.5" />
+              <div className="p-5 bg-emerald-50/20 rounded-xl border border-emerald-250/25 shadow-xs">
+                <h4 className="text-xs uppercase text-emerald-700 font-bold mb-2 flex items-center gap-1">
+                  <Leaf className="w-3.5 h-3.5 animate-pulse-slow" />
                   <span>Ayurvedic Diagnostics (Dashavidha Pariksha)</span>
                 </h4>
-                <div className="text-xs text-slate-300 grid grid-cols-2 gap-2 mt-2">
-                  <div>Prakriti (Body): <strong className="text-emerald-300">{history.ayush_data.prakriti}</strong></div>
-                  <div>Vikriti (Imbalance): <strong className="text-emerald-300">{history.ayush_data.vikriti}</strong></div>
-                  <div>Sara (Tissue): <strong className="text-emerald-400">{history.ayush_data.sara || 'Madhyama'}</strong></div>
-                  <div>Sattva (Mind): <strong className="text-emerald-400">{history.ayush_data.sattva || 'Madhyama'}</strong></div>
-                  <div className="col-span-2 mt-1 border-t border-slate-850 pt-1">
-                    <span className="text-slate-500 block">Ahara-Vihara habits:</span>
-                    <div>Diet: {history.ayush_data.ahara}</div>
+                <div className="text-xs text-slate-650 grid grid-cols-2 gap-2 mt-2 font-semibold">
+                  <div>Prakriti (Body): <strong className="text-emerald-700">{history.ayush_data.prakriti}</strong></div>
+                  <div>Vikriti (Imbalance): <strong className="text-emerald-700">{history.ayush_data.vikriti}</strong></div>
+                  <div>Sara (Tissue): <strong className="text-emerald-705">{history.ayush_data.sara || 'Madhyama'}</strong></div>
+                  <div>Sattva (Mind): <strong className="text-emerald-705">{history.ayush_data.sattva || 'Madhyama'}</strong></div>
+                  <div className="col-span-2 mt-1 border-t border-emerald-100 pt-1 font-semibold text-slate-800">
+                    <span className="text-slate-500 block text-[10px] font-bold uppercase tracking-wider">Ahara-Vihara habits:</span>
+                    <div className="mt-0.5">Diet: {history.ayush_data.ahara}</div>
                     <div>Lifestyle: {history.ayush_data.vihara}</div>
                   </div>
                 </div>
@@ -283,28 +283,28 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
       {/* TAB 3: TIMELINE */}
       {activeTab === 'timeline' && (
-        <div className="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl space-y-4">
-          <h3 className="text-lg font-bold text-white mb-4">Chronological Health Timeline</h3>
-          <div className="relative pl-8 border-l-2 border-cyan-500/30 space-y-6 ml-4">
+        <div className="p-6 bg-white rounded-3xl border border-slate-205 shadow-xl space-y-4">
+          <h3 className="text-lg font-black text-slate-855 mb-4">Chronological Health Timeline</h3>
+          <div className="relative pl-8 border-l-2 border-cyan-200 space-y-6 ml-4">
             {(timeline.length > 0 ? timeline : [
               { document_id: 'doc-1', file_name: 'previous_prescription.pdf', doc_type: 'PRESCRIPTION', document_date: '2026-08-25', summary: 'Essential Hypertension, Dyslipidemia | Medication: Telmisartan, Atorvastatin, Aspirin.', extracted_entities: {} },
               { document_id: 'doc-2', file_name: 'blood_report.jpg', doc_type: 'LAB_REPORT', document_date: '2026-08-26', summary: 'Fasting Blood Sugar: 138 mg/dL (High), HbA1c: 7.2% (Elevated), Cholesterol: 225 mg/dL (Elevated).', extracted_entities: {} }
             ]).map((item, idx) => (
               <div key={idx} className="relative">
                 {/* Timeline node dot */}
-                <div className="absolute -left-[41px] top-1.5 w-6 h-6 rounded-full bg-slate-900 border-2 border-cyan-400 flex items-center justify-center shadow-md">
-                  <div className="w-2 h-2 rounded-full bg-cyan-400" />
+                <div className="absolute -left-[41px] top-1.5 w-6 h-6 rounded-full bg-white border-2 border-cyan-600 flex items-center justify-center shadow-md">
+                  <div className="w-2 h-2 rounded-full bg-cyan-650" />
                 </div>
 
-                <div className="p-5 bg-slate-950 rounded-xl border border-slate-850 shadow hover:border-slate-700 transition-colors">
-                  <div className="flex items-center justify-between text-xs font-bold text-cyan-455 mb-2">
-                    <span className="bg-cyan-950/40 px-2 py-0.5 border border-cyan-800/40 rounded flex items-center gap-1">
+                <div className="p-5 bg-slate-50 rounded-xl border border-slate-200 shadow hover:border-slate-350 transition-colors">
+                  <div className="flex items-center justify-between text-xs font-bold text-cyan-705 mb-2">
+                    <span className="bg-cyan-50 px-2 py-0.5 border border-cyan-200 rounded flex items-center gap-1">
                       <Clock className="w-3 h-3" /> {item.document_date}
                     </span>
-                    <span className="uppercase text-slate-400 font-semibold">{item.doc_type}</span>
+                    <span className="uppercase text-slate-500 font-bold">{item.doc_type}</span>
                   </div>
-                  <div className="font-extrabold text-white text-base">{item.file_name}</div>
-                  <p className="text-sm text-slate-350 mt-1.5 leading-relaxed">{item.summary}</p>
+                  <div className="font-extrabold text-slate-800 text-base">{item.file_name}</div>
+                  <p className="text-sm text-slate-705 mt-1.5 leading-relaxed font-medium">{item.summary}</p>
                 </div>
               </div>
             ))}
@@ -314,22 +314,22 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
       {/* TAB 4: DOCUMENTS SIDE-BY-SIDE VIEWER */}
       {activeTab === 'documents' && (
-        <div className="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="p-6 bg-white rounded-3xl border border-slate-205 shadow-xl space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div>
-              <h3 className="text-xl font-black text-white">OCR Medical Document Intelligence</h3>
-              <p className="text-xs text-slate-450">Inspect raw scanned text versus AI extracted entities side-by-side</p>
+              <h3 className="text-xl font-black text-slate-850">OCR Medical Document Intelligence</h3>
+              <p className="text-xs text-slate-500 font-semibold mb-1">Inspect raw scanned text versus AI extracted entities side-by-side</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400">Select Document:</span>
-              <div className="flex rounded-lg overflow-hidden border border-slate-700 bg-slate-800">
+              <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Select Document:</span>
+              <div className="flex rounded-lg overflow-hidden border border-slate-200 bg-slate-50">
                 {effectiveDocs.map((doc, idx) => (
                   <button
                     key={doc.id}
                     onClick={() => setSelectedDocId(doc.id)}
                     className={`px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${activeDoc?.id === doc.id
-                      ? 'bg-cyan-600 text-white'
-                      : 'text-slate-405 hover:text-white hover:bg-slate-700'
+                      ? 'bg-cyan-650 text-white shadow-xs font-semibold'
+                      : 'text-slate-655 hover:text-slate-900 hover:bg-slate-100'
                       }`}
                   >
                     Doc {idx + 1} ({doc.doc_type})
@@ -344,39 +344,39 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
               {/* Left Column: Original Scanned Text Document Simulation (High Contrast View) */}
               <div className="space-y-2">
-                <span className="text-xs uppercase text-slate-300 font-bold block mb-1 flex items-center gap-2">
-                  <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="text-xs uppercase text-slate-655 font-bold block mb-1 flex items-center gap-2">
+                  <Eye className="w-3.5 h-3.5 text-cyan-600" />
                   Original Document Scanned Text / Pre-processed File
                 </span>
 
-                <div className="bg-white text-slate-950 p-6 rounded-2xl shadow-2xl min-h-[380px] font-mono text-sm leading-relaxed border-4 border-slate-305 flex flex-col justify-between">
-                  <div className="whitespace-pre-wrap">{activeDoc.ocr_raw_text}</div>
+                <div className="bg-white text-slate-950 p-6 rounded-2xl shadow-md min-h-[380px] font-mono text-sm leading-relaxed border-4 border-slate-200 flex flex-col justify-between">
+                  <div className="whitespace-pre-wrap font-medium">{activeDoc.ocr_raw_text}</div>
 
-                  <div className="border-t border-dashed border-slate-300 pt-4 mt-6 flex justify-between items-center text-[10px] text-slate-500 font-sans">
+                  <div className="border-t border-dashed border-slate-200 pt-4 mt-6 flex justify-between items-center text-[10px] text-slate-400 font-sans">
                     <span>File ID: {activeDoc.id.substring(0, 8)}...</span>
-                    <span className="font-bold text-cyan-700">MEDIKIOSK DIGITAL SCANNER v1.2</span>
+                    <span className="font-bold text-cyan-600">MEDIKIOSK DIGITAL SCANNER v1.2</span>
                   </div>
                 </div>
               </div>
 
               {/* Right Column: Structured Information */}
               <div className="space-y-4">
-                <span className="text-xs uppercase text-slate-300 font-bold block mb-1 flex items-center gap-2">
-                  <Table className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="text-xs uppercase text-slate-655 font-bold block mb-1 flex items-center gap-2">
+                  <Table className="w-3.5 h-3.5 text-cyan-600" />
                   AI Structured Insights (Physician Verified)
                 </span>
 
-                <div className="p-5 bg-slate-950 rounded-2xl border border-slate-850 space-y-4 min-h-[380px]">
+                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-4 min-h-[380px] shadow-sm">
 
                   {/* Metadata */}
-                  <div className="grid grid-cols-2 gap-3 text-xs border-b border-slate-850 pb-3">
+                  <div className="grid grid-cols-2 gap-3 text-xs border-b border-slate-200 pb-3">
                     <div>
-                      <span className="text-slate-500 block">Extracted Date:</span>
-                      <strong className="text-white">{activeDoc.document_date || '2026-08-25'}</strong>
+                      <span className="text-slate-500 font-semibold block">Extracted Date:</span>
+                      <strong className="text-slate-800 font-bold">{activeDoc.document_date || '2026-08-25'}</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 block">Institution / Hospital:</span>
-                      <strong className="text-cyan-400">
+                      <span className="text-slate-500 font-semibold block">Institution / Hospital:</span>
+                      <strong className="text-cyan-705 font-black">
                         {(activeDoc.extracted_entities as any).hospital_name || (activeDoc.extracted_entities as any).hospital || 'Diagnostics Center'}
                       </strong>
                     </div>
@@ -384,16 +384,16 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
                   {/* Diagnoses Entities */}
                   <div>
-                    <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block mb-1.5">Extracted Codes / Diagnoses</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-1.5">Extracted Codes / Diagnoses</span>
                     <div className="flex flex-wrap gap-1.5">
                       {activeDoc.extracted_entities.diagnoses && activeDoc.extracted_entities.diagnoses.length > 0 ? (
                         activeDoc.extracted_entities.diagnoses.map((d: string, index: number) => (
-                          <span key={index} className="px-2.5 py-1 bg-cyan-950/40 text-cyan-300 border border-cyan-900/60 rounded-lg text-xs font-semibold">
+                          <span key={index} className="px-2.5 py-1 bg-cyan-50 text-cyan-705 border border-cyan-200 rounded-lg text-xs font-bold shadow-xs animate-none">
                             {d}
                           </span>
                         ))
                       ) : (
-                        <span className="text-xs text-slate-500">No diagnoses extracted from document</span>
+                        <span className="text-xs text-slate-500 font-medium">No diagnoses extracted from document</span>
                       )}
                     </div>
                   </div>
@@ -401,20 +401,20 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
                   {/* Medications Table */}
                   {activeDoc.extracted_entities.medications && activeDoc.extracted_entities.medications.length > 0 && (
                     <div>
-                      <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block mb-1.5">Extracted Medications</span>
-                      <div className="overflow-hidden border border-slate-850 rounded-xl">
-                        <table className="w-full text-xs text-left">
-                          <thead className="bg-slate-900 text-slate-400 font-bold border-b border-slate-850">
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-1.5">Extracted Medications</span>
+                      <div className="overflow-hidden border border-slate-200 rounded-xl">
+                        <table className="w-full text-xs text-left bg-white">
+                          <thead className="bg-slate-100 text-slate-600 border-b border-slate-200 font-black">
                             <tr>
                               <th className="p-2">Drug Name</th>
                               <th className="p-2">Dosage</th>
                               <th className="p-2 text-center">Frequency</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-850">
+                          <tbody className="divide-y divide-slate-200">
                             {activeDoc.extracted_entities.medications.map((m: any, idx: number) => (
-                              <tr key={idx} className="text-slate-200">
-                                <td className="p-2 font-semibold text-cyan-200">{m.name}</td>
+                              <tr key={idx} className="text-slate-700 font-medium">
+                                <td className="p-2 font-black text-cyan-750">{m.name}</td>
                                 <td className="p-2">{m.dosage || 'As directed'}</td>
                                 <td className="p-2 text-center">{m.frequency || 'QD'}</td>
                               </tr>
@@ -428,26 +428,26 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
                   {/* Lab Results Table */}
                   {activeDoc.extracted_entities.lab_results && activeDoc.extracted_entities.lab_results.length > 0 && (
                     <div>
-                      <span className="text-xs font-bold text-slate-450 uppercase tracking-widest block mb-1.5">Extracted Investigations</span>
-                      <div className="overflow-hidden border border-slate-850 rounded-xl">
-                        <table className="w-full text-xs text-left">
-                          <thead className="bg-slate-900 text-slate-400 font-bold border-b border-slate-850">
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-1.5">Extracted Investigations</span>
+                      <div className="overflow-hidden border border-slate-200 rounded-xl">
+                        <table className="w-full text-xs text-left bg-white">
+                          <thead className="bg-slate-100 text-slate-605 border-b border-slate-200 font-black">
                             <tr>
                               <th className="p-2">Test</th>
                               <th className="p-2 text-center">Value</th>
                               <th className="p-2">Ref Range</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-850">
+                          <tbody className="divide-y divide-slate-200">
                             {activeDoc.extracted_entities.lab_results.map((r: any, idx: number) => {
                               const isHigh = r.value && r.reference_range && parseFloat(r.value) > parseFloat(r.reference_range.split('-')[1] || '999');
                               return (
-                                <tr key={idx} className="text-slate-205">
-                                  <td className="p-2 font-semibold">{r.test_name}</td>
-                                  <td className={`p-2 text-center font-bold ${isHigh ? 'text-rose-400' : 'text-slate-200'}`}>
+                                <tr key={idx} className="text-slate-700">
+                                  <td className="p-2 font-bold">{r.test_name}</td>
+                                  <td className={`p-2 text-center font-black ${isHigh ? 'text-rose-600 font-black' : 'text-slate-700'}`}>
                                     {r.value} {r.unit} {isHigh && '▲'}
                                   </td>
-                                  <td className="p-2 text-slate-500">{r.reference_range || '--'}</td>
+                                  <td className="p-2 text-slate-500 font-medium">{r.reference_range || '--'}</td>
                                 </tr>
                               );
                             })}
@@ -462,7 +462,7 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
             </div>
           ) : (
-            <div className="text-slate-500 text-xs py-8 text-center bg-slate-950 rounded-xl">
+            <div className="text-slate-500 text-xs py-8 text-center bg-slate-50 border border-slate-200 rounded-xl font-semibold">
               No medical records associated with this session.
             </div>
           )}

@@ -24,19 +24,19 @@ export const AuditLogsTable: React.FC = () => {
     loadLogs();
   }, []);
 
-  const filteredLogs = logs.filter(l => 
+  const filteredLogs = logs.filter(l =>
     l.action.toLowerCase().includes(filter.toLowerCase()) ||
     l.resource.toLowerCase().includes(filter.toLowerCase()) ||
     (l.details && l.details.toLowerCase().includes(filter.toLowerCase()))
   );
 
   return (
-    <div className="bg-slate-900/90 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
-      
-      <div className="p-4 bg-slate-800/80 border-b border-slate-700 flex items-center justify-between gap-4">
+    <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xl">
+
+      <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Shield className="w-5 h-5 text-cyan-400" />
-          <h3 className="text-lg font-bold text-white">Hospital Audit & Security Event Logs</h3>
+          <Shield className="w-5 h-5 text-cyan-600" />
+          <h3 className="text-lg font-black text-slate-850">Hospital Audit & Security Event Logs</h3>
         </div>
 
         <div className="flex items-center gap-3">
@@ -45,11 +45,11 @@ export const AuditLogsTable: React.FC = () => {
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Search action or resource..."
-            className="px-3 py-1.5 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none"
+            className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 font-semibold focus:outline-none focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 shadow-xs"
           />
           <button
             onClick={loadLogs}
-            className="p-2 rounded-lg bg-slate-700 text-slate-300 hover:text-white"
+            className="p-2 rounded-lg bg-white border border-slate-200 text-slate-605 hover:text-slate-850 hover:bg-slate-100 transition-all cursor-pointer shadow-xs"
             title="Refresh Logs"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -60,7 +60,7 @@ export const AuditLogsTable: React.FC = () => {
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-slate-950/80 border-b border-slate-800 font-bold text-slate-400 uppercase tracking-wider">
+            <tr className="bg-slate-100 border-b border-slate-200 font-black text-slate-600 uppercase tracking-wider">
               <th className="p-3">Timestamp</th>
               <th className="p-3">Actor Role</th>
               <th className="p-3">Action</th>
@@ -68,27 +68,27 @@ export const AuditLogsTable: React.FC = () => {
               <th className="p-3">Audit Details</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60 font-mono">
+          <tbody className="divide-y divide-slate-200 font-mono bg-white">
             {filteredLogs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="p-8 text-center text-slate-500 font-sans">
+                <td colSpan={5} className="p-8 text-center text-slate-500 font-sans font-semibold">
                   No audit logs recorded yet.
                 </td>
               </tr>
             ) : (
               filteredLogs.map((l) => (
-                <tr key={l.id} className="hover:bg-slate-800/40">
-                  <td className="p-3 text-slate-400 whitespace-nowrap">
+                <tr key={l.id} className="hover:bg-slate-50 transition-colors">
+                  <td className="p-3 text-slate-500 font-semibold whitespace-nowrap font-sans">
                     {new Date(l.timestamp).toLocaleString()}
                   </td>
                   <td className="p-3">
-                    <span className="px-2 py-0.5 bg-cyan-500/20 text-cyan-300 rounded font-bold">
+                    <span className="px-2 py-0.5 bg-cyan-50 text-cyan-700 rounded font-bold border border-cyan-100 text-[10px]">
                       {l.actor_role}
                     </span>
                   </td>
-                  <td className="p-3 font-bold text-white">{l.action}</td>
-                  <td className="p-3 text-slate-300">{l.resource}</td>
-                  <td className="p-3 text-slate-300 font-sans text-xs">{l.details || '-'}</td>
+                  <td className="p-3 font-black text-slate-850">{l.action}</td>
+                  <td className="p-3 text-slate-600 font-semibold">{l.resource}</td>
+                  <td className="p-3 text-slate-600 font-semibold font-sans text-xs">{l.details || '-'}</td>
                 </tr>
               ))
             )}
