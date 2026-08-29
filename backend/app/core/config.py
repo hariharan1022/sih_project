@@ -12,7 +12,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
     
     # Database (SQLite default for simple demo, configurable to PostgreSQL)
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./medikiosk.db")
+    DATABASE_URL: str = os.getenv(
+        "DATABASE_URL",
+        "sqlite+aiosqlite:////tmp/medikiosk.db" if os.getenv("VERCEL") else "sqlite+aiosqlite:///./medikiosk.db"
+    )
     
     # Local Ollama AI Settings
     OLLAMA_BASE_URL: str = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
