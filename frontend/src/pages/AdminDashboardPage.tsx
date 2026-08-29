@@ -26,8 +26,8 @@ export const AdminDashboardPage: React.FC = () => {
 
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-black text-slate-850">Hospital Administration & System Portal</h2>
-          <p className="text-sm text-slate-500 font-semibold">Manage local Ollama model parameters, AYUSH history mode, and audit logs</p>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white">Hospital Administration & System Portal</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold">Manage local Ollama model parameters, AYUSH history mode, and audit logs</p>
         </div>
       </div>
 
@@ -35,12 +35,12 @@ export const AdminDashboardPage: React.FC = () => {
       <AdminStatsOverview stats={stats} />
 
       {/* Admin Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
         <button
           onClick={() => setActiveTab('settings')}
           className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all cursor-pointer ${activeTab === 'settings'
-              ? 'bg-cyan-600 text-white shadow-sm'
-              : 'text-slate-605 hover:text-slate-800 hover:bg-slate-100'
+            ? 'bg-cyan-600 text-white shadow-sm'
+            : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
         >
           AI & System Settings
@@ -49,8 +49,8 @@ export const AdminDashboardPage: React.FC = () => {
         <button
           onClick={() => setActiveTab('audit')}
           className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all cursor-pointer ${activeTab === 'audit'
-              ? 'bg-cyan-600 text-white shadow-sm'
-              : 'text-slate-605 hover:text-slate-800 hover:bg-slate-100'
+            ? 'bg-cyan-600 text-white shadow-sm'
+            : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
         >
           System Audit Logs
