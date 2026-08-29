@@ -99,24 +99,24 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
     <div className="space-y-6">
 
       {/* Patient Header Card */}
-      <div className="p-6 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h2 className="text-2xl font-black text-white">{session.patient?.full_name || 'Demo Patient'}</h2>
-            <span className="px-3 py-1 bg-cyan-500/20 text-cyan-305 font-bold text-xs rounded-full border border-cyan-500/30">
+            <h2 className="text-2xl font-black text-slate-850">{session.patient?.full_name || 'Demo Patient'}</h2>
+            <span className="px-3 py-1 bg-cyan-50 text-cyan-700 font-bold text-xs rounded-full border border-cyan-200">
               Token: {session.token_number}
             </span>
             {isVerified && (
-              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 font-bold text-xs rounded-full border border-emerald-500/30 flex items-center gap-1">
+              <span className="px-3 py-1 bg-emerald-50 text-emerald-700 font-bold text-xs rounded-full border border-emerald-250 flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5" /> Doctor Verified
               </span>
             )}
           </div>
-          <div className="text-sm text-slate-400 flex items-center gap-4 flex-wrap">
-            <span>Age: <strong>{session.patient?.age || 45}Y</strong></span>
-            <span>Gender: <strong>{session.patient?.gender || 'Male'}</strong></span>
-            <span>MRN: <strong>{session.patient?.mrn || 'MRN-89412'}</strong></span>
-            <span>ABHA ID: <strong className="text-cyan-300">{session.patient?.abha_id || '91-9876-5432-1098'}</strong></span>
+          <div className="text-sm text-slate-655 flex items-center gap-4 flex-wrap font-medium">
+            <span>Age: <strong className="text-slate-800">{session.patient?.age || 45}Y</strong></span>
+            <span>Gender: <strong className="text-slate-800">{session.patient?.gender || 'Male'}</strong></span>
+            <span>MRN: <strong className="text-slate-800">{session.patient?.mrn || 'MRN-89412'}</strong></span>
+            <span>ABHA ID: <strong className="text-cyan-700">{session.patient?.abha_id || '91-9876-5432-1098'}</strong></span>
           </div>
         </div>
 
@@ -124,7 +124,7 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenFHIRModal}
-            className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 hover:text-white border border-slate-700 text-cyan-300 font-bold text-sm rounded-xl flex items-center gap-2 transition-all cursor-pointer"
+            className="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-350 text-cyan-705 font-bold text-sm rounded-xl flex items-center gap-2 transition-all cursor-pointer shadow-sm"
           >
             <Share2 className="w-4 h-4" />
             <span>FHIR Bundle</span>
@@ -132,7 +132,7 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
           <button
             onClick={onOpenSummaryEditor}
-            className="px-5 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:brightness-110 text-white font-bold text-sm rounded-xl shadow-lg shadow-cyan-600/30 flex items-center gap-2 transition-all cursor-pointer"
+            className="px-5 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:brightness-110 text-white font-bold text-sm rounded-xl shadow-lg shadow-cyan-600/10 flex items-center gap-2 transition-all cursor-pointer"
           >
             <Edit3 className="w-4 h-4" />
             <span>{isVerified ? 'Edit Summary' : 'Verify & Approve Summary'}</span>
@@ -142,17 +142,17 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
 
       {/* RED FLAG WARNING BANNER IF DETECTED */}
       {hasRedFlags && (
-        <div className="p-4 bg-rose-950/80 border-2 border-rose-500/80 rounded-2xl flex items-start gap-4 shadow-xl shadow-rose-600/20 animate-pulse">
-          <ShieldAlert className="w-8 h-8 text-rose-450 flex-shrink-0 mt-0.5 animate-bounce" />
+        <div className="p-4 bg-rose-50 border-2 border-rose-300 rounded-3xl flex items-start gap-4 shadow-lg shadow-rose-500/5 animate-pulse-slow">
+          <ShieldAlert className="w-8 h-8 text-rose-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <div className="text-base font-black text-rose-300 flex items-center gap-2">
+            <div className="text-base font-black text-rose-700 flex items-center gap-2">
               <span>POTENTIAL EMERGENCY RED FLAG DETECTED</span>
-              <span className="px-2 py-0.5 text-xs bg-rose-500 text-white font-bold rounded">CRITICAL</span>
+              <span className="px-2 py-0.5 text-xs bg-rose-600 text-white font-bold rounded">CRITICAL</span>
             </div>
-            <p className="text-xs text-rose-200 mt-1">
+            <p className="text-sm text-rose-900 mt-1 font-semibold">
               Patient reports chest discomfort radiating to left shoulder and breathing difficulty for 2 days. Triggers Acute coronary triage evaluation.
             </p>
-            <div className="mt-2 text-xs text-rose-450 italic font-semibold">
+            <div className="mt-2 text-xs text-rose-700 italic font-semibold">
               Disclaimer: AI Triage Assistant. Attending Doctor must immediately assess vitals and perform ECG.
             </div>
           </div>
@@ -160,7 +160,7 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
       )}
 
       {/* Detail View Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
         {[
           { id: 'summary', label: 'AI Physician Summary' },
           { id: 'history', label: 'Detailed Intake History' },
@@ -171,8 +171,8 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
             key={t.id}
             onClick={() => setActiveTab(t.id as any)}
             className={`px-4 py-2 text-sm font-bold rounded-xl transition-all cursor-pointer ${activeTab === t.id
-              ? 'bg-cyan-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              ? 'bg-cyan-600 text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-800 hover:bg-slate-100'
               }`}
           >
             {t.label}

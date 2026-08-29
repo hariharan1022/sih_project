@@ -50,33 +50,33 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-4 select-none">
-      <div className="kiosk-card border-emerald-500/25 bg-slate-900/90 relative overflow-hidden">
+      <div className="kiosk-card bg-white border border-slate-200 shadow-xl rounded-3xl p-8 relative overflow-hidden">
 
         {/* Decorative corner glow */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50/20 rounded-full blur-3xl"></div>
 
         {/* Step Header */}
-        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
-          <div className="p-3 bg-emerald-500/10 text-emerald-400 border border-emerald-505/20 rounded-2xl shadow-md">
+        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+          <div className="p-3 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-2xl shadow-sm">
             <Leaf className="w-7 h-7" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-2xl font-black text-white">AYUSH Intake Engine</h2>
-              <span className="px-2 py-0.5 text-[10px] font-black bg-emerald-550/10 text-emerald-450 border border-emerald-500/30 rounded-full tracking-wider uppercase">Dashavidha Pariksha</span>
+              <h2 className="text-2xl font-black text-slate-850">AYUSH Intake Engine</h2>
+              <span className="px-2 py-0.5 text-[10px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full tracking-wider uppercase">Dashavidha Pariksha</span>
             </div>
-            <p className="text-slate-400 text-xs mt-0.5">Collect ten-fold clinical attributes for customized Ayurvedic health timelines</p>
+            <p className="text-slate-500 text-xs mt-0.5 font-medium">Collect ten-fold clinical attributes for customized Ayurvedic health timelines</p>
           </div>
         </div>
 
         {/* Section Navigation Tabs */}
-        <div className="flex gap-2 p-1 bg-slate-950/80 border border-slate-800 rounded-xl mb-6">
+        <div className="flex gap-2 p-1 bg-slate-50 border border-slate-200/80 rounded-xl mb-6">
           <button
             type="button"
             onClick={() => setActiveSubTab('physiology')}
             className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-2 ${activeSubTab === 'physiology'
-                ? 'bg-emerald-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              ? 'bg-emerald-600 text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-800 hover:bg-slate-100/60'
               }`}
           >
             <Compass className="w-3.5 h-3.5" />
@@ -87,8 +87,8 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
             type="button"
             onClick={() => setActiveSubTab('capacity')}
             className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-2 ${activeSubTab === 'capacity'
-                ? 'bg-emerald-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              ? 'bg-emerald-600 text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-800 hover:bg-slate-100/60'
               }`}
           >
             <Shield className="w-3.5 h-3.5" />
@@ -99,8 +99,8 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
             type="button"
             onClick={() => setActiveSubTab('lifestyle')}
             className={`flex-1 py-3 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-2 ${activeSubTab === 'lifestyle'
-                ? 'bg-emerald-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+              ? 'bg-emerald-600 text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-800 hover:bg-slate-100/60'
               }`}
           >
             <Activity className="w-3.5 h-3.5" />
@@ -115,7 +115,7 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
           {activeSubTab === 'physiology' && (
             <div className="space-y-5 animate-fade-in">
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">
+                <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2.5">
                   Constitutional Body Type (Prakriti / பிரகிருதி)
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -125,8 +125,8 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                       type="button"
                       onClick={() => setPrakriti(opt)}
                       className={`p-2.5 rounded-lg border text-xs font-semibold kiosk-btn transition-colors ${prakriti === opt
-                          ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300'
-                          : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-700 font-black shadow-xs'
+                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-350 hover:bg-slate-50/50'
                         }`}
                     >
                       {opt}
@@ -136,7 +136,7 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">
+                <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2.5">
                   State of Tridosha Humors (Vikriti / விக்ருதி)
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -146,8 +146,8 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                       type="button"
                       onClick={() => setVikriti(opt)}
                       className={`p-2.5 rounded-lg border text-xs font-semibold kiosk-btn transition-colors ${vikriti === opt
-                          ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300'
-                          : 'bg-slate-950 border-slate-850 text-slate-400 hover:border-slate-700'
+                        ? 'bg-emerald-50 border-emerald-500 text-emerald-700 font-black shadow-xs'
+                        : 'bg-white border-slate-205 text-slate-670 hover:border-slate-350 hover:bg-slate-50/50'
                         }`}
                     >
                       {opt}
@@ -158,11 +158,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Tissue Excellence (Sara / சாரம்)</label>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Tissue Excellence (Sara / சாரம்)</label>
                   <select
                     value={sara}
                     onChange={(e) => setSara(e.target.value)}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-205 rounded-lg text-slate-800 text-xs focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none font-semibold transition-all"
                   >
                     <option value="Pravara (Superior/Strong tissues)">Pravara (Superior)</option>
                     <option value="Madhyama (Medium Tissue Excellence)">Madhyama (Medium)</option>
@@ -171,11 +171,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Body Compactness (Samhanana)</label>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Body Compactness (Samhanana)</label>
                   <select
                     value={samhanana}
                     onChange={(e) => setSamhanana(e.target.value)}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-205 rounded-lg text-slate-800 text-xs focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none font-semibold transition-all"
                   >
                     <option value="Susamhata (Strong/Well-built)">Susamhata (Strong)</option>
                     <option value="Madhyama (Medium Compactness)">Madhyama (Medium)</option>
@@ -184,11 +184,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Body Proportions (Pramana)</label>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Body Proportions (Pramana)</label>
                   <select
                     value={pramana}
                     onChange={(e) => setPramana(e.target.value)}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-805 rounded-lg text-slate-200 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-205 rounded-lg text-slate-805 text-xs focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none font-semibold transition-all"
                   >
                     <option value="Sama (Proportionate/Athletic)">Sama (Proportionate)</option>
                     <option value="Hina (Under-proportioned)">Hina (Under-proportioned)</option>
@@ -204,11 +204,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
             <div className="space-y-4 animate-fade-in">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Adaptability Class (Satmya / சாத்மியம்)</label>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Adaptability Class (Satmya / சாத்மியம்)</label>
                   <select
                     value={satmya}
                     onChange={(e) => setSatmya(e.target.value)}
-                    className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-3 bg-slate-50 border border-slate-205 rounded-xl text-slate-800 text-xs focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none font-semibold transition-all"
                   >
                     <option value="Pravara (Excellent adaptability to multiple tastes/climates)">Pravara (Excellent)</option>
                     <option value="Madhyama (Medium Adaptability)">Madhyama (Medium)</option>
@@ -217,11 +217,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Mind/Will Strength (Sattva / சத்துவம்)</label>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Mind/Will Strength (Sattva / சத்துவம்)</label>
                   <select
                     value={sattva}
                     onChange={(e) => setSattva(e.target.value)}
-                    className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-3 bg-slate-50 border border-slate-205 rounded-xl text-slate-800 text-xs focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none font-semibold transition-all"
                   >
                     <option value="Pravara Satva (Strong mind / Pain-tolerant)">Pravara (Strong Will)</option>
                     <option value="Madhyama (Medium Mental Strength)">Madhyama (Medium)</option>
@@ -232,11 +232,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Digestive Power (Ahara Shakti)</label>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Digestive Power (Ahara Shakti)</label>
                   <select
                     value={aharaShakti}
                     onChange={(e) => setAharaShakti(e.target.value)}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-205 rounded-lg text-slate-800 text-xs focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none font-semibold transition-all"
                   >
                     <option value="Jarana-Abhyavarana (High food intake & digestion)">Pravara (Excellent digestion)</option>
                     <option value="Madhyama (Moderate Digestion)">Madhyama (Moderate)</option>
@@ -245,11 +245,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Exercise Capacity (Vyayama Shakti)</label>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Exercise Capacity (Vyayama Shakti)</label>
                   <select
                     value={vyayamaShakti}
                     onChange={(e) => setVyayamaShakti(e.target.value)}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-205 rounded-lg text-slate-800 text-xs focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none font-semibold transition-all"
                   >
                     <option value="Pravara (High physical stamina)">Pravara (High Stamina)</option>
                     <option value="Madhyama (Moderate Exercise Capacity)">Madhyama (Moderate)</option>
@@ -258,11 +258,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Age Group Categorization (Vaya / வயது)</label>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">Age Group Categorization (Vaya / வயது)</label>
                   <select
                     value={vaya}
                     onChange={(e) => setVaya(e.target.value)}
-                    className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                    className="w-full p-2.5 bg-slate-50 border border-slate-205 rounded-lg text-slate-805 text-xs focus:ring-1 focus:ring-emerald-505 focus:bg-white focus:outline-none font-semibold transition-all"
                   >
                     <option value="Bala (Young/Growth - up to 16Y)">Bala (Childhood)</option>
                     <option value="Madhyama (Middle Age - 16-60Y)">Madhyama (Adult)</option>
@@ -277,7 +277,7 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
           {activeSubTab === 'lifestyle' && (
             <div className="space-y-4 animate-fade-in">
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">
                   Dietary Habits & Preferences (Ahara / ஆகாரம்)
                 </label>
                 <input
@@ -285,12 +285,12 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                   value={ahara}
                   onChange={(e) => setAhara(e.target.value)}
                   placeholder="e.g. Vegetarian, irregular timing, prefers hot spicy liquids..."
-                  className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:border-emerald-500 focus:outline-none text-sm font-semibold"
+                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-850 placeholder:text-slate-400 focus:bg-white focus:border-emerald-500 focus:outline-none text-sm font-semibold transition-all shadow-xs"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">
+                <label className="block text-xs font-bold text-slate-600 uppercase tracking-widest mb-2">
                   Daily Conduct & Sleep Habits (Vihara / விஹாரம்)
                 </label>
                 <input
@@ -298,12 +298,12 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                   value={vihara}
                   onChange={(e) => setVihara(e.target.value)}
                   placeholder="e.g. Sedentary computer task, stays awake post midnight, irregular walks..."
-                  className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder:text-slate-600 focus:border-emerald-500 focus:outline-none text-sm font-semibold"
+                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-850 placeholder:text-slate-400 focus:bg-white focus:border-emerald-500 focus:outline-none text-sm font-semibold transition-all shadow-xs"
                 />
               </div>
 
-              <div className="p-4 bg-emerald-950/20 border border-emerald-900/50 rounded-2xl text-xs text-slate-400 flex items-start gap-2.5">
-                <Leaf className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="p-4 bg-emerald-50 border border-emerald-250/20 rounded-2xl text-xs text-slate-600 flex items-start gap-2.5 font-medium">
+                <Leaf className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <span>
                   AYUSH Dashavidha Pariksha helps determine the patient's biological constitution (Prakriti) and root imbalances (Vikriti) to advise doctors on matching lifestyle regimens and therapeutic remedies.
                 </span>
@@ -314,11 +314,11 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
         </div>
 
         {/* Tab progression helpers */}
-        <div className="flex items-center justify-between gap-4 mt-8 pt-4 border-t border-slate-800">
+        <div className="flex items-center justify-between gap-4 mt-8 pt-4 border-t border-slate-100">
           <button
             type="button"
             onClick={onSkip}
-            className="px-5 py-3 rounded-xl border border-slate-800 text-slate-450 hover:bg-slate-850 hover:text-white font-bold kiosk-btn text-xs transition-colors"
+            className="px-5 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold kiosk-btn text-xs transition-colors"
           >
             Skip AYUSH Profile
           </button>
@@ -331,7 +331,7 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
                   if (activeSubTab === 'physiology') setActiveSubTab('capacity');
                   else if (activeSubTab === 'capacity') setActiveSubTab('lifestyle');
                 }}
-                className="px-6 py-3 rounded-xl bg-slate-800 text-white font-bold text-xs kiosk-btn hover:bg-slate-700 transition-all"
+                className="px-6 py-3 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs kiosk-btn hover:bg-slate-200 transition-all cursor-pointer"
               >
                 Next Section
               </button>
@@ -339,7 +339,7 @@ export const AyushIntakeStep: React.FC<AyushIntakeStepProps> = ({ language, onNe
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-sm kiosk-btn shadow-lg shadow-emerald-500/20 flex items-center gap-2 hover:brightness-110"
+                className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-sm kiosk-btn shadow-lg shadow-emerald-500/10 flex items-center gap-2 hover:brightness-110"
               >
                 <span>Save AYUSH Intake</span>
                 <ArrowRight className="w-4 h-4" />

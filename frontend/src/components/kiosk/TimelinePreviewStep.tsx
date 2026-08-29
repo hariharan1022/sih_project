@@ -44,43 +44,43 @@ export const TimelinePreviewStep: React.FC<TimelinePreviewStepProps> = ({
   ];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6">
-      <div className="kiosk-card">
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="kiosk-card bg-white border border-slate-200 shadow-xl rounded-3xl p-8">
 
-        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-700">
-          <div className="p-3 bg-cyan-500/20 text-cyan-400 rounded-xl">
+        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+          <div className="p-3 bg-cyan-50 text-cyan-600 rounded-2xl">
             <Clock className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">Chronological Medical Timeline</h2>
-            <p className="text-sm text-slate-400">Automated chronological organization of past prescriptions, lab tests & hospitalizations</p>
+            <h2 className="text-2xl font-black text-slate-855">Chronological Medical Timeline</h2>
+            <p className="text-sm text-slate-500 font-medium">Automated chronological organization of past prescriptions, lab tests & hospitalizations</p>
           </div>
         </div>
 
         {/* Timeline Visualization */}
-        <div className="relative pl-6 border-l-2 border-cyan-500/40 space-y-8 my-8">
+        <div className="relative pl-6 border-l-2 border-cyan-200 space-y-8 my-8">
           {displayDocs.map((doc, idx) => (
             <div key={doc.id || idx} className="relative group">
-              
-              {/* Timeline Dot */}
-              <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-cyan-400 border-4 border-slate-900 shadow-md shadow-cyan-500/50" />
 
-              <div className="p-5 bg-slate-900/90 rounded-2xl border border-slate-700 shadow-lg">
+              {/* Timeline Dot */}
+              <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-cyan-600 border-4 border-white shadow-md shadow-cyan-600/20" />
+
+              <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm">
                 <div className="flex items-center justify-between gap-4 mb-2">
-                  <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 text-xs font-bold rounded-full border border-cyan-500/30">
+                  <span className="px-3 py-1 bg-cyan-50 text-cyan-700 text-xs font-bold rounded-full border border-cyan-200">
                     {doc.document_date || '2026-08-25'}
                   </span>
-                  <span className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
+                  <span className="text-xs font-black uppercase text-slate-500 tracking-wider">
                     {doc.doc_type}
                   </span>
                 </div>
 
-                <h4 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-cyan-400" />
+                <h4 className="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-cyan-650" />
                   <span>{doc.file_name}</span>
                 </h4>
 
-                <p className="text-xs text-cyan-200 bg-slate-950/80 p-3 rounded-lg border border-slate-800 font-mono">
+                <p className="text-xs text-slate-700 bg-white p-3 rounded-lg border border-slate-200/80 font-semibold font-mono">
                   "{doc.ocr_raw_text.substring(0, 120)}..."
                 </p>
               </div>
@@ -90,11 +90,11 @@ export const TimelinePreviewStep: React.FC<TimelinePreviewStepProps> = ({
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-between gap-4 pt-4 border-t border-slate-700">
+        <div className="flex items-center justify-between gap-4 pt-4 border-t border-slate-100">
           <button
             type="button"
             onClick={onBack}
-            className="px-6 py-4 rounded-xl border border-slate-700 text-slate-300 font-bold kiosk-btn hover:bg-slate-800"
+            className="px-6 py-4 rounded-xl border border-slate-200 text-slate-650 font-bold kiosk-btn hover:bg-slate-50 shadow-sm"
           >
             Back
           </button>
@@ -102,7 +102,7 @@ export const TimelinePreviewStep: React.FC<TimelinePreviewStepProps> = ({
           <button
             type="button"
             onClick={onNext}
-            className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black text-xl kiosk-btn shadow-lg shadow-cyan-500/20 flex items-center gap-3"
+            className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-555 to-blue-600 text-white font-black text-xl kiosk-btn shadow-lg shadow-cyan-500/10 flex items-center gap-3"
           >
             <span>Review Final History</span>
             <ArrowRight className="w-6 h-6" />

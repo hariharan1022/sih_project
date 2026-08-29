@@ -44,8 +44,8 @@ export const ChiefComplaintStep: React.FC<ChiefComplaintStepProps> = ({ language
   const promptTitle = language === 'ta'
     ? 'உங்கள் முதன்மை உடல்நல கோளாறு என்ன?'
     : language === 'hi'
-    ? 'आपकी मुख्य स्वास्थ्य शिकायत क्या है?'
-    : 'What is your primary chief complaint today?';
+      ? 'आपकी मुख्य स्वास्थ्य शिकायत क्या है?'
+      : 'What is your primary chief complaint today?';
 
   const handleTranscript = (text: string) => {
     if (text) {
@@ -62,16 +62,16 @@ export const ChiefComplaintStep: React.FC<ChiefComplaintStepProps> = ({ language
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6">
-      <div className="kiosk-card">
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="kiosk-card bg-white border border-slate-200 shadow-xl rounded-3xl p-8">
 
-        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-700">
-          <div className="p-3 bg-cyan-500/20 text-cyan-400 rounded-xl">
+        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-105">
+          <div className="p-3 bg-cyan-50 text-cyan-600 rounded-2xl">
             <Stethoscope className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">{promptTitle}</h2>
-            <p className="text-sm text-slate-400">Speak into microphone 🎤 or select touch options below</p>
+            <h2 className="text-2xl font-black text-slate-850">{promptTitle}</h2>
+            <p className="text-sm text-slate-500">Speak into microphone 🎤 or select touch options below</p>
           </div>
         </div>
 
@@ -84,7 +84,7 @@ export const ChiefComplaintStep: React.FC<ChiefComplaintStepProps> = ({ language
 
         {/* Text Box Input Alternative */}
         <div className="my-6">
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
             Described Complaint (Or Type / Edit)
           </label>
           <textarea
@@ -92,13 +92,13 @@ export const ChiefComplaintStep: React.FC<ChiefComplaintStepProps> = ({ language
             value={complaintText}
             onChange={(e) => setComplaintText(e.target.value)}
             placeholder="e.g. Chest pain for 2 days radiating to left arm..."
-            className="w-full p-4 bg-slate-900 border border-slate-700 rounded-xl text-cyan-200 text-lg focus:border-cyan-500 focus:outline-none"
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-lg focus:bg-white focus:border-cyan-500 focus:outline-none transition-all shadow-xs font-semibold"
           />
         </div>
 
         {/* Quick Symptom Chips */}
         <div className="mb-8">
-          <label className="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">
+          <label className="block text-xs font-bold uppercase tracking-wider text-cyan-650 mb-3">
             Quick Touch Symptoms
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -107,21 +107,21 @@ export const ChiefComplaintStep: React.FC<ChiefComplaintStepProps> = ({ language
                 key={idx}
                 type="button"
                 onClick={() => setComplaintText(s.val)}
-                className="p-4 rounded-xl border border-slate-700 bg-slate-900/90 text-left font-bold text-white hover:border-cyan-400 hover:bg-slate-800 kiosk-btn flex items-center justify-between"
+                className="p-4 rounded-xl border border-slate-200 bg-white text-left font-bold text-slate-800 hover:border-cyan-500 hover:bg-slate-50/50 kiosk-btn flex items-center justify-between shadow-xs transition-all duration-200"
               >
                 <span>{language === 'ta' ? s.ta : language === 'hi' ? s.hi : s.en}</span>
-                <span className="text-xs text-cyan-400 font-normal">Tap →</span>
+                <span className="text-xs text-cyan-600 font-semibold">Tap →</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* Nav Buttons */}
-        <div className="flex items-center justify-between gap-4 pt-4 border-t border-slate-700">
+        <div className="flex items-center justify-between gap-4 pt-4 border-t border-slate-100">
           <button
             type="button"
             onClick={onBack}
-            className="px-6 py-4 rounded-xl border border-slate-700 text-slate-300 font-bold kiosk-btn hover:bg-slate-800"
+            className="px-6 py-4 rounded-xl border border-slate-205 text-slate-650 font-bold kiosk-btn hover:bg-slate-50 shadow-sm"
           >
             Back
           </button>
@@ -129,7 +129,7 @@ export const ChiefComplaintStep: React.FC<ChiefComplaintStepProps> = ({ language
           <button
             type="button"
             onClick={handleSubmit}
-            className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black text-xl kiosk-btn shadow-lg shadow-cyan-500/20 flex items-center gap-3"
+            className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-550 to-blue-600 text-white font-black text-xl kiosk-btn shadow-lg shadow-cyan-500/10 flex items-center gap-3"
           >
             <span>Start AI Interview</span>
             <ArrowRight className="w-6 h-6" />
