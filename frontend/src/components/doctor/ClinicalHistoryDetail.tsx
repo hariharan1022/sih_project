@@ -36,16 +36,8 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
   const [activeTab, setActiveTab] = useState<'summary' | 'history' | 'timeline' | 'documents'>('summary');
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
 
-  if (!history) {
-    return (
-      <div className="p-8 text-center bg-slate-900/90 rounded-2xl border border-slate-800 text-slate-400">
-        Select a patient from the queue to view clinical history.
-      </div>
-    );
-  }
-
-  const isVerified = history.verification_status === 'VERIFIED';
-  const hasRedFlags = session.has_red_flags || (history.red_flags && history.red_flags.length > 0);
+  const isVerified = history?.verification_status === 'VERIFIED';
+  const hasRedFlags = session.has_red_flags || (history?.red_flags && history.red_flags.length > 0);
 
   // Setup effective documents list with fallback demo data if none uploaded
   const effectiveDocs = documents.length > 0 ? documents : [
@@ -191,93 +183,110 @@ export const ClinicalHistoryDetail: React.FC<ClinicalHistoryDetailProps> = ({
             <span className="text-xs text-cyan-705 font-bold uppercase tracking-wider bg-cyan-70 px-2.5 py-0.5 rounded border border-cyan-200 shadow-xs">Local LLM: Qwen3:8b</span>
           </div>
 
-          <div className="p-6 bg-slate-50 rounded-xl border border-slate-200 font-mono text-sm text-slate-800 whitespace-pre-wrap leading-relaxed shadow-inner">
-            {history.doctor_approved_summary || history.ai_generated_summary}
-          </div>
+          {history ? (
+            <>
+              <div className="p-6 bg-slate-50 rounded-xl border border-slate-200 font-mono text-sm text-slate-800 whitespace-pre-wrap leading-relaxed shadow-inner">
+                {history.doctor_approved_summary || history.ai_generated_summary}
+              </div>
 
-          {history.doctor_notes && (
-            <div className="p-5 bg-cyan-50/35 rounded-xl border border-cyan-200/50">
-              <span className="text-xs uppercase text-cyan-705 font-bold block mb-1">Physician Evaluation Notes:</span>
-              <p className="text-sm text-slate-700 font-semibold">{history.doctor_notes}</p>
+              {history.doctor_notes && (
+                <div className="p-5 bg-cyan-50/35 rounded-xl border border-cyan-200/50">
+                  <span className="text-xs uppercase text-cyan-705 font-bold block mb-1">Physician Evaluation Notes:</span>
+                  <p className="text-sm text-slate-700 font-semibold">{history.doctor_notes}</p>
+                </div>
+              )}
+
+              <div className="p-3.5 bg-slate-50 rounded-lg text-xs text-slate-500 flex items-center justify-between border border-slate-200 font-semibold shadow-xs">
+                <span>Notice: AI clinical intake summary. Clinician holds final approval authority.</span>
+                <span>Last Updated: {new Date(history.updated_at).toLocaleString()}</span>
+              </div>
+            </>
+          ) : (
+            <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+              <div className="text-cyan-600 font-black text-lg">⚡ Active Patient Session in Progress</div>
+              <p className="text-sm text-slate-600 font-semibold max-w-md mx-auto">
+                Patient is currently completing the interactive voice intake or scanning records at the Kiosk. Summary will generate live upon intake completion.
+              </p>
             </div>
           )}
-
-          <div className="p-3.5 bg-slate-50 rounded-lg text-xs text-slate-500 flex items-center justify-between border border-slate-200 font-semibold shadow-xs">
-            <span>Notice: AI clinical intake summary. Clinician holds final approval authority.</span>
-            <span>Last Updated: {new Date(history.updated_at).toLocaleString()}</span>
-          </div>
         </div>
       )}
 
       {/* TAB 2: DETAILED INTAKE HISTORY */}
       {activeTab === 'history' && (
         <div className="p-6 bg-white rounded-3xl border border-slate-205 shadow-xl space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {history ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
-              <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Chief Complaint</h4>
-              <p className="text-lg font-black text-slate-800">{history.chief_complaint}</p>
-            </div>
-
-            <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
-              <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">History of Present Illness (HPI)</h4>
-              <p className="text-sm text-slate-700 leading-relaxed font-semibold">{history.history_of_present_illness}</p>
-            </div>
-
-            <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
-              <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Past Medical History</h4>
-              {history.past_medical_history.length > 0 ? (
-                <ul className="list-disc list-inside text-sm text-slate-700 space-y-1 font-semibold">
-                  {history.past_medical_history.map((m, idx) => <li key={idx}>{m}</li>)}
-                </ul>
-              ) : (
-                <span className="text-xs text-slate-500 font-semibold">No past conditions reported by patient</span>
-              )}
-            </div>
-
-            <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
-              <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Current Medications (OCR & Interview)</h4>
-              {history.medications.length > 0 ? (
-                <div className="space-y-1.5 text-sm text-slate-700 font-semibold">
-                  {history.medications.map((m: any, idx) => (
-                    <div key={idx} className="font-bold text-cyan-800">
-                      • {typeof m === 'object' ? `${m.name} (${m.dosage || 'Daily'}) ${m.frequency ? `- ${m.frequency}` : ''}` : m}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <span className="text-xs text-slate-500 font-semibold">None reported</span>
-              )}
-            </div>
-
-            <div className="p-5 bg-slate-55 rounded-xl border border-rose-200/80 shadow-xs">
-              <h4 className="text-xs uppercase text-rose-700 font-bold mb-2">Drug & Allergy Exclusions</h4>
-              <div className="text-sm font-black text-rose-700 font-mono">
-                {history.allergies.join(', ') || 'No known drug allergies (NKDA)'}
+              <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
+                <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Chief Complaint</h4>
+                <p className="text-lg font-black text-slate-800">{history.chief_complaint}</p>
               </div>
-            </div>
 
-            {history.ayush_data && history.ayush_data.ayush_mode_enabled && (
-              <div className="p-5 bg-emerald-50/20 rounded-xl border border-emerald-250/25 shadow-xs">
-                <h4 className="text-xs uppercase text-emerald-700 font-bold mb-2 flex items-center gap-1">
-                  <Leaf className="w-3.5 h-3.5 animate-pulse-slow" />
-                  <span>Ayurvedic Diagnostics (Dashavidha Pariksha)</span>
-                </h4>
-                <div className="text-xs text-slate-650 grid grid-cols-2 gap-2 mt-2 font-semibold">
-                  <div>Prakriti (Body): <strong className="text-emerald-700">{history.ayush_data.prakriti}</strong></div>
-                  <div>Vikriti (Imbalance): <strong className="text-emerald-700">{history.ayush_data.vikriti}</strong></div>
-                  <div>Sara (Tissue): <strong className="text-emerald-705">{history.ayush_data.sara || 'Madhyama'}</strong></div>
-                  <div>Sattva (Mind): <strong className="text-emerald-705">{history.ayush_data.sattva || 'Madhyama'}</strong></div>
-                  <div className="col-span-2 mt-1 border-t border-emerald-100 pt-1 font-semibold text-slate-800">
-                    <span className="text-slate-500 block text-[10px] font-bold uppercase tracking-wider">Ahara-Vihara habits:</span>
-                    <div className="mt-0.5">Diet: {history.ayush_data.ahara}</div>
-                    <div>Lifestyle: {history.ayush_data.vihara}</div>
+              <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
+                <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">History of Present Illness (HPI)</h4>
+                <p className="text-sm text-slate-700 leading-relaxed font-semibold">{history.history_of_present_illness}</p>
+              </div>
+
+              <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
+                <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Past Medical History</h4>
+                {history.past_medical_history && history.past_medical_history.length > 0 ? (
+                  <ul className="list-disc list-inside text-sm text-slate-700 space-y-1 font-semibold">
+                    {history.past_medical_history.map((m, idx) => <li key={idx}>{m}</li>)}
+                  </ul>
+                ) : (
+                  <span className="text-xs text-slate-500 font-semibold">No past conditions reported by patient</span>
+                )}
+              </div>
+
+              <div className="p-5 bg-slate-55 rounded-xl border border-slate-200 shadow-xs">
+                <h4 className="text-xs uppercase text-cyan-700 font-bold mb-2">Current Medications (OCR & Interview)</h4>
+                {history.medications && history.medications.length > 0 ? (
+                  <div className="space-y-1.5 text-sm text-slate-700 font-semibold">
+                    {history.medications.map((m: any, idx) => (
+                      <div key={idx} className="font-bold text-cyan-800">
+                        • {typeof m === 'object' ? `${m.name} (${m.dosage || 'Daily'}) ${m.frequency ? `- ${m.frequency}` : ''}` : m}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-xs text-slate-500 font-semibold">None reported</span>
+                )}
+              </div>
+
+              <div className="p-5 bg-slate-55 rounded-xl border border-rose-200/80 shadow-xs">
+                <h4 className="text-xs uppercase text-rose-700 font-bold mb-2">Drug & Allergy Exclusions</h4>
+                <div className="text-sm font-black text-rose-700 font-mono">
+                  {history.allergies ? history.allergies.join(', ') : 'No known drug allergies (NKDA)'}
+                </div>
+              </div>
+
+              {history.ayush_data && history.ayush_data.ayush_mode_enabled && (
+                <div className="p-5 bg-emerald-50/20 rounded-xl border border-emerald-250/25 shadow-xs">
+                  <h4 className="text-xs uppercase text-emerald-700 font-bold mb-2 flex items-center gap-1">
+                    <Leaf className="w-3.5 h-3.5 animate-pulse-slow" />
+                    <span>Ayurvedic Diagnostics (Dashavidha Pariksha)</span>
+                  </h4>
+                  <div className="text-xs text-slate-650 grid grid-cols-2 gap-2 mt-2 font-semibold">
+                    <div>Prakriti (Body): <strong className="text-emerald-700">{history.ayush_data.prakriti}</strong></div>
+                    <div>Vikriti (Imbalance): <strong className="text-emerald-700">{history.ayush_data.vikriti}</strong></div>
+                    <div>Sara (Tissue): <strong className="text-emerald-705">{history.ayush_data.sara || 'Madhyama'}</strong></div>
+                    <div>Sattva (Mind): <strong className="text-emerald-705">{history.ayush_data.sattva || 'Madhyama'}</strong></div>
+                    <div className="col-span-2 mt-1 border-t border-emerald-100 pt-1 font-semibold text-slate-800">
+                      <span className="text-slate-500 block text-[10px] font-bold uppercase tracking-wider">Ahara-Vihara habits:</span>
+                      <div className="mt-0.5">Diet: {history.ayush_data.ahara}</div>
+                      <div>Lifestyle: {history.ayush_data.vihara}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-          </div>
+            </div>
+          ) : (
+            <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200">
+              <span className="text-sm text-slate-600 font-semibold">Intake details will populate once patient finishes kiosk survey.</span>
+            </div>
+          )}
         </div>
       )}
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PatientQueue } from '../components/doctor/PatientQueue';
 import { ClinicalHistoryDetail } from '../components/doctor/ClinicalHistoryDetail';
 import { SummaryEditorModal } from '../components/doctor/SummaryEditorModal';
@@ -17,62 +17,94 @@ export const DoctorDashboardPage: React.FC = () => {
   const [documents, setDocuments] = useState<MedicalDocument[]>([]);
   const [timeline, setTimeline] = useState<MedicalTimelineItem[]>([]);
   const [redFlagsOnly, setRedFlagsOnly] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [isFHIRModalOpen, setIsFHIRModalOpen] = useState(false);
 
-  const loadQueue = async () => {
+  const loadSessionDetail = useCallback(async (sessionId: string) => {
+    if (!sessionId) return;
+    try {
+      const s = await getSessionApi(sessionId);
+      setSelectedSession(s);
+
+      try {
+        const h = await getClinicalHistoryApi(sessionId);
+        setHistory(h);
+      } catch (historyErr) {
+        // Patient session might still be answering interview questions
+        setHistory(null);
+      }
+
+      const docs = await getSessionDocumentsApi(sessionId);
+      setDocuments(docs);
+
+      if (s.patient_id) {
+        const tl = await getPatientTimelineApi(s.patient_id);
+        setTimeline(tl);
+      }
+    } catch (err) {
+      console.warn('Error loading session detail:', err);
+    }
+  }, []);
+
+  const loadQueue = useCallback(async (silent = false) => {
+    if (!silent) setIsRefreshing(true);
     try {
       const q = await getDoctorQueueApi(redFlagsOnly);
       setQueue(q);
-      if (q.length > 0 && !selectedSessionId) {
-        setSelectedSessionId(q[0].id);
-      }
+
+      setSelectedSessionId(prevId => {
+        if (!prevId && q.length > 0) {
+          return q[0].id;
+        }
+        return prevId;
+      });
     } catch (err) {
       console.warn('Load doctor queue note:', err);
+    } finally {
+      if (!silent) setIsRefreshing(false);
     }
-  };
-
-  useEffect(() => {
-    loadQueue();
-    const interval = setInterval(loadQueue, 10000); // Polling for incoming kiosk intakes
-    return () => clearInterval(interval);
   }, [redFlagsOnly]);
 
+  // Initial fetch and 3-second real-time live synchronization loop
   useEffect(() => {
-    const loadSessionDetail = async () => {
-      if (!selectedSessionId) return;
-      try {
-        const s = await getSessionApi(selectedSessionId);
-        setSelectedSession(s);
+    loadQueue(false);
+    const interval = setInterval(() => {
+      loadQueue(true);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [loadQueue]);
 
-        const h = await getClinicalHistoryApi(selectedSessionId);
-        setHistory(h);
+  // Sync session details whenever selectedSessionId changes or during sync loop
+  useEffect(() => {
+    if (selectedSessionId) {
+      loadSessionDetail(selectedSessionId);
+    }
+  }, [selectedSessionId, loadSessionDetail]);
 
-        const docs = await getSessionDocumentsApi(selectedSessionId);
-        setDocuments(docs);
-
-        if (s.patient_id) {
-          const tl = await getPatientTimelineApi(s.patient_id);
-          setTimeline(tl);
-        }
-      } catch (err) {
-        console.warn('Error loading session detail:', err);
-      }
-    };
-    loadSessionDetail();
-  }, [selectedSessionId]);
+  const handleManualRefresh = () => {
+    loadQueue(false);
+    if (selectedSessionId) {
+      loadSessionDetail(selectedSessionId);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       
-      {/* Patient Queue */}
+      {/* Patient Queue with Real-time Sync Controls */}
       <PatientQueue
         queue={queue}
         selectedSessionId={selectedSessionId}
-        onSelectSession={(id) => setSelectedSessionId(id)}
+        onSelectSession={(id) => {
+          setSelectedSessionId(id);
+          loadSessionDetail(id);
+        }}
         redFlagsOnly={redFlagsOnly}
         onToggleRedFlagsOnly={(flag) => setRedFlagsOnly(flag)}
+        isRefreshing={isRefreshing}
+        onRefresh={handleManualRefresh}
       />
 
       {/* Patient Clinical History & Verification Workspace */}
@@ -87,7 +119,7 @@ export const DoctorDashboardPage: React.FC = () => {
         />
       )}
 
-      {/* Modals */}
+      {/* Verification Summary Editor Modal */}
       {history && (
         <SummaryEditorModal
           history={history}
@@ -95,11 +127,12 @@ export const DoctorDashboardPage: React.FC = () => {
           onClose={() => setIsSummaryModalOpen(false)}
           onSaved={(updated) => {
             setHistory(updated);
-            loadQueue();
+            handleManualRefresh();
           }}
         />
       )}
 
+      {/* FHIR Bundle Viewer Modal */}
       {selectedSessionId && (
         <FHIRBundleModal
           sessionId={selectedSessionId}
@@ -111,3 +144,4 @@ export const DoctorDashboardPage: React.FC = () => {
     </div>
   );
 };
+

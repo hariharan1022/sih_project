@@ -45,6 +45,11 @@ backend/medikiosk.db
 .env.test.local
 .env.production.local
 
+# Uploaded files
+backend/app/uploads/*
+!backend/app/uploads/.gitkeep
+
 # OS files
 .DS_Store
 Thumbs.db
+

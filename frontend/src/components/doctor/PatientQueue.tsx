@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserCheck, ShieldAlert, Clock, Stethoscope, CheckCircle2, ArrowRight, FileText } from 'lucide-react';
+import { UserCheck, ShieldAlert, Clock, Stethoscope, CheckCircle2, ArrowRight, FileText, RefreshCw, Radio } from 'lucide-react';
 import { KioskSession } from '../../types';
 
 interface PatientQueueProps {
@@ -8,6 +8,8 @@ interface PatientQueueProps {
   onSelectSession: (sessionId: string) => void;
   redFlagsOnly: boolean;
   onToggleRedFlagsOnly: (flag: boolean) => void;
+  isRefreshing?: boolean;
+  onRefresh?: () => void;
 }
 
 export const PatientQueue: React.FC<PatientQueueProps> = ({
@@ -15,7 +17,9 @@ export const PatientQueue: React.FC<PatientQueueProps> = ({
   selectedSessionId,
   onSelectSession,
   redFlagsOnly,
-  onToggleRedFlagsOnly
+  onToggleRedFlagsOnly,
+  isRefreshing = false,
+  onRefresh
 }) => {
   return (
     <div className="bg-white rounded-3xl border border-slate-205 overflow-hidden shadow-xl select-none">
@@ -28,14 +32,33 @@ export const PatientQueue: React.FC<PatientQueueProps> = ({
           <span className="px-2.5 py-0.5 bg-cyan-50 text-cyan-705 text-xs font-black rounded-full border border-cyan-200">
             {queue.length} Patients
           </span>
+          <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-200 flex items-center gap-1.5 shadow-2xs">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>LIVE QUEUE</span>
+          </span>
         </div>
 
         <div className="flex items-center gap-2">
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              title="Refresh queue data in real-time"
+              className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-cyan-600 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <span>{isRefreshing ? 'Syncing...' : 'Live Sync'}</span>
+            </button>
+          )}
+
           <button
             onClick={() => onToggleRedFlagsOnly(!redFlagsOnly)}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${redFlagsOnly
                 ? 'bg-rose-600 text-white shadow-sm'
-                : 'bg-white border border-slate-200 text-rose-700 hover:bg-rose-50/50 hover:border-rose-300'
+                : 'bg-white border border-slate-200 text-rose-700 hover:bg-rose-50/50 hover:border-rose-300 shadow-xs'
               }`}
           >
             <ShieldAlert className="w-4 h-4" />

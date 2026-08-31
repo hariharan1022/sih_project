@@ -393,8 +393,8 @@ Return JSON schema:
   "doctor_name": "Doctor name or null",
   "hospital_name": "Hospital or clinic name or null",
   "diagnoses": ["Diagnosis 1"],
-  "medications": [{"name": "Drug", "dosage": "500mg", "frequency": "BD"}],
-  "lab_results": [{"test_name": "HbA1c", "value": "7.2", "unit": "%", "reference_range": "4.0-5.6"}],
+  "medications": [{{"name": "Drug", "dosage": "500mg", "frequency": "BD"}}],
+  "lab_results": [{{"test_name": "HbA1c", "value": "7.2", "unit": "%", "reference_range": "4.0-5.6"}}],
   "procedures": []
 }}
 """
